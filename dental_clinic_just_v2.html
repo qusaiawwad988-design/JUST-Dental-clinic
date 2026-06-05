@@ -1,0 +1,624 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Poppins:wght@400;500;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #1a6fa8; --primary-dark: #0d4f7a; --primary-light: #e8f4fd;
+    --accent: #2ab8a0; --accent-light: #e0f7f4;
+    --text-dark: #1a2332; --text-mid: #3a4a5c; --text-muted: #7a8899;
+    --bg: #f5f9fd; --white: #ffffff; --border: #d0e4f0;
+    --shadow: 0 4px 24px rgba(26,111,168,0.10); --radius: 14px; --nav-h: 68px;
+  }
+  body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text-dark); direction: rtl; min-height: 100vh; }
+  body.en { font-family: 'Poppins', sans-serif; direction: ltr; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--nav-h); background: rgba(255,255,255,0.97);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 24px; gap: 4px;
+    backdrop-filter: blur(8px); box-shadow: 0 2px 16px rgba(26,111,168,0.07);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 14px; color: var(--primary-dark);
+    text-decoration: none; white-space: nowrap; flex-shrink: 0;
+  }
+  .nav-logo .logo-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 20px; flex-shrink: 0;
+  }
+  .nav-links { display: flex; align-items: center; gap: 2px; margin-right: auto; margin-left: 0; list-style: none; }
+  body.en .nav-links { margin-left: auto; margin-right: 0; }
+  .nav-links li a {
+    display: block; padding: 7px 12px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; color: var(--text-mid);
+    text-decoration: none; transition: all 0.18s; cursor: pointer;
+  }
+  .nav-links li a:hover, .nav-links li a.active { background: var(--primary-light); color: var(--primary); }
+
+  /* LANGUAGE DROPDOWN */
+  .lang-wrapper { position: relative; margin-right: 0; margin-left: 8px; }
+  body.en .lang-wrapper { margin-left: 0; margin-right: 8px; }
+  .lang-toggle {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--primary-light); color: var(--primary);
+    border: 1.5px solid var(--border); border-radius: 8px;
+    padding: 7px 13px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: all 0.18s; font-family: inherit;
+    white-space: nowrap;
+  }
+  .lang-toggle:hover { background: #d4eaf8; border-color: var(--primary); }
+  .lang-toggle i { font-size: 15px; transition: transform 0.2s; }
+  .lang-toggle.open i.ti-chevron-down { transform: rotate(180deg); }
+  .lang-dropdown {
+    display: none; position: absolute; top: calc(100% + 6px);
+    right: 0; min-width: 130px;
+    background: white; border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: 0 8px 24px rgba(26,111,168,0.13);
+    overflow: hidden; z-index: 200;
+  }
+  body.en .lang-dropdown { right: auto; left: 0; }
+  .lang-dropdown.open { display: block; }
+  .lang-option {
+    display: flex; align-items: center; gap: 9px;
+    padding: 10px 16px; font-size: 13px; font-weight: 500;
+    color: var(--text-mid); cursor: pointer; transition: background 0.15s;
+    border: none; background: none; width: 100%; font-family: inherit;
+    text-align: right;
+  }
+  body.en .lang-option { text-align: left; }
+  .lang-option:hover { background: var(--primary-light); color: var(--primary); }
+  .lang-option.selected { color: var(--primary); font-weight: 700; background: var(--primary-light); }
+  .lang-flag { font-size: 16px; }
+
+  .nav-cta {
+    background: var(--accent); color: white; border: none; border-radius: 8px;
+    padding: 9px 18px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background 0.18s; font-family: inherit; white-space: nowrap;
+  }
+  .nav-cta:hover { background: #1e9e8a; }
+
+  .page { padding-top: var(--nav-h); }
+
+  /* HERO */
+  #hero {
+    background: linear-gradient(135deg, #0d4f7a 0%, #1a6fa8 40%, #1a8a9a 100%);
+    color: white; padding: 70px 40px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; min-height: 420px; position: relative; overflow: hidden;
+  }
+  #hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 340px; height: 340px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  #hero::after { content: ''; position: absolute; bottom: -80px; left: 40px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .hero-text { max-width: 560px; position: relative; z-index: 2; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 20px; padding: 5px 14px; font-size: 13px; margin-bottom: 22px; }
+  .hero-badge i { color: #7de0d4; }
+  .hero-text h1 { font-size: clamp(24px, 3.5vw, 38px); font-weight: 900; line-height: 1.3; margin-bottom: 16px; }
+  .hero-text h1 span { color: #7de0d4; }
+  .hero-text p { font-size: 15px; line-height: 1.8; opacity: 0.88; margin-bottom: 28px; }
+  .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary { background: white; color: var(--primary-dark); border: none; border-radius: 10px; padding: 12px 28px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.18s; font-family: inherit; }
+  .btn-primary:hover { background: #e8f4fd; transform: translateY(-1px); }
+  .btn-outline { background: transparent; color: white; border: 2px solid rgba(255,255,255,0.5); border-radius: 10px; padding: 12px 28px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.18s; font-family: inherit; }
+  .btn-outline:hover { border-color: white; background: rgba(255,255,255,0.1); }
+  .hero-stats { display: flex; gap: 20px; position: relative; z-index: 2; flex-shrink: 0; }
+  .stat-card { background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius); padding: 20px 22px; text-align: center; min-width: 100px; }
+  .stat-card .num { font-size: 30px; font-weight: 900; color: #7de0d4; }
+  .stat-card .lbl { font-size: 12px; opacity: 0.82; margin-top: 4px; }
+
+  /* UNIV */
+  #univ { background: white; border-bottom: 1px solid var(--border); padding: 18px 40px; display: flex; align-items: center; gap: 16px; justify-content: center; }
+  .univ-logo-box { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; background: var(--primary-light); display: flex; align-items: center; justify-content: center; border: 2px solid var(--primary); flex-shrink: 0; }
+  .univ-text .univ-name { font-weight: 700; font-size: 16px; color: var(--primary-dark); }
+  .univ-text .univ-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .univ-badge { background: var(--primary-light); color: var(--primary); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 600; margin-right: 0; margin-left: auto; }
+  body.en .univ-badge { margin-left: 0; margin-right: auto; }
+  .free-banner { background: linear-gradient(90deg, #1a8a6a, #2ab8a0); color: white; padding: 12px 40px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 14px; font-weight: 600; }
+
+  /* SECTIONS */
+  section { padding: 64px 40px; }
+  .section-header { text-align: center; margin-bottom: 44px; }
+  .section-tag { display: inline-block; background: var(--primary-light); color: var(--primary); border-radius: 20px; padding: 5px 16px; font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+  .section-header h2 { font-size: 28px; font-weight: 800; color: var(--text-dark); margin-bottom: 10px; }
+  .section-header p { font-size: 15px; color: var(--text-muted); max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+  /* SERVICES */
+  #services { background: var(--bg); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; max-width: 960px; margin: 0 auto; }
+  .svc-card { background: white; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 22px; text-align: center; transition: all 0.22s; }
+  .svc-card:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateY(-3px); }
+  .svc-icon { width: 58px; height: 58px; border-radius: 14px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .ic-blue { background: var(--primary-light); color: var(--primary); }
+  .ic-teal { background: var(--accent-light); color: var(--accent); }
+  .ic-green { background: #e8f5e8; color: #2a8a2a; }
+  .ic-orange { background: #fff3e8; color: #e07a1a; }
+  .ic-pink { background: #ffeef5; color: #c0457a; }
+  .svc-card h3 { font-size: 15px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+  .svc-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .free-tag { display: inline-block; background: #e8f5e8; color: #2a8a2a; border-radius: 12px; padding: 3px 10px; font-size: 11px; font-weight: 700; margin-top: 10px; }
+
+  /* BOOKING */
+  #booking { background: white; }
+  .booking-wrap { max-width: 620px; margin: 0 auto; background: white; border: 1px solid var(--border); border-radius: 20px; padding: 40px; box-shadow: var(--shadow); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 0; }
+  .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+  .form-group label { font-size: 14px; font-weight: 600; color: var(--text-mid); }
+  .form-group input, .form-group select, .form-group textarea { border: 1.5px solid var(--border); border-radius: 10px; padding: 11px 14px; font-size: 14px; font-family: inherit; color: var(--text-dark); background: var(--bg); transition: border-color 0.18s; outline: none; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); background: white; }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .submit-btn { width: 100%; background: #25d366; color: white; border: none; border-radius: 12px; padding: 14px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.18s; margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .submit-btn:hover { background: #1fb855; transform: translateY(-1px); }
+  .submit-btn i { font-size: 20px; }
+  .submit-note { text-align: center; margin-top: 14px; font-size: 13px; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .success-msg { display: none; background: var(--accent-light); border: 1.5px solid var(--accent); border-radius: 12px; padding: 18px; text-align: center; color: #0d6e5a; font-weight: 600; margin-top: 16px; font-size: 14px; }
+
+  /* DOCTORS */
+  #doctors { background: var(--bg); }
+  .doctors-inner { max-width: 700px; margin: 0 auto; }
+  .doctor-card { background: white; border: 1px solid var(--border); border-radius: 20px; padding: 36px; display: flex; gap: 28px; align-items: flex-start; box-shadow: var(--shadow); }
+  .doc-avatar { width: 90px; height: 90px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: white; font-size: 28px; font-weight: 800; }
+  .doc-info h3 { font-size: 20px; font-weight: 800; color: var(--text-dark); margin-bottom: 4px; }
+  .doc-title { font-size: 13px; color: var(--primary); font-weight: 600; margin-bottom: 12px; }
+  .doc-desc { font-size: 14px; color: var(--text-mid); line-height: 1.75; margin-bottom: 16px; }
+  .doc-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .doc-tag { background: var(--primary-light); color: var(--primary); border-radius: 8px; padding: 4px 12px; font-size: 12px; font-weight: 600; }
+  .doc-contacts { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .doc-contact-item { display: flex; align-items: center; gap: 9px; font-size: 13px; color: var(--text-mid); }
+  .doc-contact-item i { color: var(--primary); font-size: 16px; }
+  .doc-contact-item a { color: var(--primary); text-decoration: none; }
+  .doc-contact-item a:hover { text-decoration: underline; }
+
+  /* CONTACT */
+  #contact { background: white; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 820px; margin: 0 auto; }
+  .contact-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; display: flex; gap: 16px; align-items: flex-start; }
+  .contact-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .contact-card h4 { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+  .contact-card p, .contact-card a { font-size: 14px; color: var(--text-mid); text-decoration: none; line-height: 1.6; word-break: break-all; }
+  .contact-card a:hover { color: var(--primary); }
+
+  footer { background: var(--primary-dark); color: rgba(255,255,255,0.7); padding: 28px 40px; text-align: center; font-size: 13px; }
+  footer strong { color: white; }
+
+  @media (max-width: 700px) {
+    #hero { flex-direction: column; padding: 40px 20px; }
+    .hero-stats { justify-content: center; }
+    .form-row { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .doctor-card { flex-direction: column; align-items: center; text-align: center; }
+    .doc-tags { justify-content: center; }
+    section { padding: 48px 20px; }
+    nav { padding: 0 12px; gap: 2px; }
+    .nav-logo span { display: none; }
+  }
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">عيادات جامعة العلوم والتكنولوجيا لطب الأسنان</h2>
+
+<div class="page" id="top">
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <div class="logo-icon"><i class="ti ti-tooth" aria-hidden="true"></i></div>
+      <span id="nav-brand">عيادات جامعة العلوم والتكنولوجيا</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#" id="nl-home" class="active" onclick="goTo('hero',this);return false;">الرئيسية</a></li>
+      <li><a href="#" id="nl-services" onclick="goTo('services',this);return false;">خدماتنا</a></li>
+      <li><a href="#" id="nl-booking" onclick="goTo('booking',this);return false;">حجز موعد</a></li>
+      <li><a href="#" id="nl-doctors" onclick="goTo('doctors',this);return false;">الأطباء</a></li>
+      <li><a href="#" id="nl-contact" onclick="goTo('contact',this);return false;">تواصل معنا</a></li>
+    </ul>
+
+    <!-- LANGUAGE DROPDOWN -->
+    <div class="lang-wrapper" id="lang-wrapper">
+      <button class="lang-toggle" id="lang-toggle" onclick="toggleLangMenu()">
+        <i class="ti ti-world" aria-hidden="true"></i>
+        <span id="lang-label">اللغة</span>
+        <i class="ti ti-chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="lang-dropdown" id="lang-dropdown">
+        <button class="lang-option selected" id="opt-ar" onclick="setLang('ar')">
+          <span class="lang-flag">🇯🇴</span> العربية
+        </button>
+        <button class="lang-option" id="opt-en" onclick="setLang('en')">
+          <span class="lang-flag">🇬🇧</span> English
+        </button>
+      </div>
+    </div>
+
+    <button class="nav-cta" id="nav-cta" onclick="goTo('booking',null)">احجز الآن</button>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <i class="ti ti-school" aria-hidden="true"></i>
+        <span id="hero-badge-txt">جامعة العلوم والتكنولوجيا - الأردن</span>
+      </div>
+      <h1 id="hero-h1">ابتسامتك أمانة في أيدٍ<br><span>متخصصة وموثوقة</span></h1>
+      <p id="hero-p">احصل على رعاية أسنان احترافية مجانية بالكامل على يد طلاب طب الأسنان تحت إشراف أساتذة متخصصين. جودة عالية، خدمة متميزة، وابتسامة لا تُنسى.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="goTo('booking',null)" id="hero-btn1">احجز موعد مجاني</button>
+        <button class="btn-outline" onclick="goTo('services',null)" id="hero-btn2">تعرّف على خدماتنا</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card"><div class="num">100%</div><div class="lbl" id="stat1-lbl">مجاني</div></div>
+      <div class="stat-card"><div class="num">5+</div><div class="lbl" id="stat2-lbl">خدمات</div></div>
+      <div class="stat-card"><div class="num">24h</div><div class="lbl" id="stat3-lbl">رد خلال</div></div>
+    </div>
+  </section>
+
+  <!-- UNIV BANNER -->
+  <div id="univ">
+    <div class="univ-logo-box">
+      <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:34px;height:34px;">
+        <rect width="34" height="34" rx="7" fill="#e8f4fd"/>
+        <path d="M17 5L3 12l14 7 14-7-14-7z" fill="#1a6fa8"/>
+        <path d="M7 15v7c2.5 2.5 5.5 4 10 4s7.5-1.5 10-4v-7" stroke="#1a6fa8" stroke-width="1.5" fill="none"/>
+        <circle cx="17" cy="12" r="2" fill="#2ab8a0"/>
+      </svg>
+    </div>
+    <div class="univ-text">
+      <div class="univ-name" id="univ-name">جامعة العلوم والتكنولوجيا الأردنية</div>
+      <div class="univ-sub" id="univ-sub">كلية طب الأسنان — طلاب السنة الرابعة</div>
+    </div>
+    <div class="univ-badge" id="univ-badge">تحت إشراف متخصصين</div>
+  </div>
+
+  <!-- FREE BANNER -->
+  <div class="free-banner">
+    <i class="ti ti-gift" aria-hidden="true"></i>
+    <span id="free-txt">العلاج مجاني بالكامل ✓ تحت إشراف أكاديمي متخصص ✓ رعاية احترافية لضمان أفضل النتائج</span>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-header">
+      <div class="section-tag" id="svc-tag">خدماتنا</div>
+      <h2 id="svc-h2">خدمات طب الأسنان المتاحة</h2>
+      <p id="svc-p">نقدم مجموعة من الخدمات الأساسية لصحة الأسنان، كلها مجانية بالكامل تحت إشراف أساتذة متخصصين</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card">
+        <div class="svc-icon ic-blue"><i class="ti ti-stethoscope" aria-hidden="true"></i></div>
+        <h3 id="svc1-h">فحص عام</h3>
+        <p id="svc1-p">فحص شامل لصحة الأسنان واللثة، تشخيص دقيق وخطة علاجية مناسبة</p>
+        <span class="free-tag" id="free-tag-1">مجاني</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon ic-teal"><i class="ti ti-shield-check" aria-hidden="true"></i></div>
+        <h3 id="svc2-h">تنظيف الأسنان</h3>
+        <p id="svc2-p">إزالة الجير والترسبات، تلميع وتنظيف احترافي لأسنان مشرقة وصحية</p>
+        <span class="free-tag" id="free-tag-2">مجاني</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon ic-blue"><i class="ti ti-tooth" aria-hidden="true"></i></div>
+        <h3 id="svc3-h">حشو الأسنان</h3>
+        <p id="svc3-p">علاج التسوس وإعادة الشكل الطبيعي للسن بمواد عالية الجودة</p>
+        <span class="free-tag" id="free-tag-3">مجاني</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon ic-orange"><i class="ti ti-scissors" aria-hidden="true"></i></div>
+        <h3 id="svc4-h">خلع الأسنان</h3>
+        <p id="svc4-p">خلع الأسنان بأقل ألم ممكن مع ضمان السلامة والتعافي السريع</p>
+        <span class="free-tag" id="free-tag-4">مجاني</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon ic-pink"><i class="ti ti-heart" aria-hidden="true"></i></div>
+        <h3 id="svc5-h">طب أسنان الأطفال</h3>
+        <p id="svc5-p">رعاية أسنان متخصصة للأطفال تشمل الفحص والحشو وتطبيق مادة الفلورايد للوقاية من التسوس</p>
+        <span class="free-tag" id="free-tag-5">مجاني</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon ic-green"><i class="ti ti-sparkles" aria-hidden="true"></i></div>
+        <h3 id="svc6-h">تبييض الأسنان</h3>
+        <p id="svc6-p">تقنيات تبييض آمنة وفعّالة للحصول على ابتسامة مشرقة وواثقة</p>
+        <span class="free-tag" id="free-tag-6">مجاني</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section id="booking">
+    <div class="section-header">
+      <div class="section-tag" id="bk-tag">حجز موعد</div>
+      <h2 id="bk-h2">احجز موعدك الآن</h2>
+      <p id="bk-p">املأ البيانات أدناه وسيتم إرسال طلبك مباشرة عبر واتساب</p>
+    </div>
+    <div class="booking-wrap">
+      <div class="form-row">
+        <div class="form-group">
+          <label id="lbl-name">الاسم الكامل <span style="color:#e05a5a">*</span></label>
+          <input type="text" id="inp-name" placeholder="أدخل اسمك الكامل">
+        </div>
+        <div class="form-group">
+          <label id="lbl-phone">رقم هاتفك <span style="color:#e05a5a">*</span></label>
+          <input type="tel" id="inp-phone" placeholder="+962...">
+        </div>
+      </div>
+      <div class="form-group">
+        <label id="lbl-service">نوع الخدمة <span style="color:#e05a5a">*</span></label>
+        <select id="inp-service">
+          <option value="" id="sel-default">-- اختر الخدمة المطلوبة --</option>
+          <option id="sel-s1" value="فحص عام">فحص عام</option>
+          <option id="sel-s2" value="تنظيف الأسنان">تنظيف الأسنان</option>
+          <option id="sel-s3" value="حشو الأسنان">حشو الأسنان</option>
+          <option id="sel-s4" value="خلع الأسنان">خلع الأسنان</option>
+          <option id="sel-s5" value="طب أسنان الأطفال">طب أسنان الأطفال</option>
+          <option id="sel-s6" value="تبييض الأسنان">تبييض الأسنان</option>
+          <option id="sel-s7" value="أخرى">أخرى</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label id="lbl-notes">ملاحظات أو استفسارات (اختياري)</label>
+        <textarea id="inp-notes" placeholder="اكتب أي تفاصيل إضافية..."></textarea>
+      </div>
+      <button class="submit-btn" id="submit-btn" onclick="sendWhatsApp()">
+        <i class="ti ti-brand-whatsapp" aria-hidden="true"></i>
+        <span id="submit-btn-txt">إرسال الطلب عبر واتساب</span>
+      </button>
+      <div class="submit-note">
+        <i class="ti ti-clock" aria-hidden="true"></i>
+        <span id="submit-note-txt">سيتم التواصل معك خلال 24 ساعة من وقت الإرسال</span>
+      </div>
+      <div class="success-msg" id="success-msg">
+        <i class="ti ti-circle-check"></i>
+        <span id="success-txt"> تم فتح واتساب! أرسل الرسالة لإتمام الحجز 🎉</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCTORS -->
+  <section id="doctors">
+    <div class="section-header">
+      <div class="section-tag" id="doc-tag">الأطباء</div>
+      <h2 id="doc-h2">فريق الرعاية الطبية</h2>
+      <p id="doc-p">متخصصون يضعون صحتك في المقام الأول</p>
+    </div>
+    <div class="doctors-inner">
+      <div class="doctor-card">
+        <div class="doc-avatar" id="doc-avatar">ق.ع</div>
+        <div class="doc-info">
+          <h3 id="doc-name">قصي عواد</h3>
+          <div class="doc-title" id="doc-title">طالب طب أسنان | السنة الرابعة — جامعة العلوم والتكنولوجيا</div>
+          <p class="doc-desc" id="doc-desc">نحن طلاب كلية طب الأسنان في جامعة العلوم والتكنولوجيا، ونعمل تحت إشراف مباشر من أساتذة متخصصين ذوي خبرات واسعة. هذا يضمن لك حصولك على أعلى مستوى من الرعاية الطبية مع الاستفادة من أحدث ما تعلمناه في مراحل دراستنا المتقدمة. كل حالة تُعالَج باهتمام كامل ودقة عالية لضمان أفضل النتائج لك.</p>
+          <div class="doc-tags">
+            <span class="doc-tag" id="tag1">حشو وترميم</span>
+            <span class="doc-tag" id="tag2">خلع وجراحة</span>
+            <span class="doc-tag" id="tag3">تنظيف ووقاية</span>
+            <span class="doc-tag" id="tag4">تبييض</span>
+            <span class="doc-tag" id="tag5">طب أطفال</span>
+            <span class="doc-tag" id="tag6">إشراف متخصص</span>
+          </div>
+          <div class="doc-contacts">
+            <div class="doc-contact-item"><i class="ti ti-phone" aria-hidden="true"></i><a href="tel:+962795462710">+962795462710</a></div>
+            <div class="doc-contact-item"><i class="ti ti-mail" aria-hidden="true"></i><a href="mailto:qusaiawwad24@gmail.com">qusaiawwad24@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <div class="section-tag" id="ct-tag">تواصل معنا</div>
+      <h2 id="ct-h2">نحن هنا لمساعدتك</h2>
+      <p id="ct-p">تواصل معنا عبر أي من الوسائل التالية وسنرد عليك في أقرب وقت</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon"><i class="ti ti-brand-whatsapp" aria-hidden="true"></i></div>
+        <div><h4 id="ct-h-wa">واتساب</h4><a href="https://wa.me/962795462710">+962795462710</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="ti ti-mail" aria-hidden="true"></i></div>
+        <div><h4 id="ct-h-email">البريد الإلكتروني</h4><a href="mailto:qusaiawwad24@gmail.com">qusaiawwad24@gmail.com</a></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+        <div><h4 id="ct-h-resp">وقت الرد</h4><p id="ct-p-resp">خلال 24 ساعة من استلام طلبك</p></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+        <div><h4 id="ct-h-loc">الموقع</h4><p id="ct-p-loc">جامعة العلوم والتكنولوجيا — الأردن</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p id="footer-txt">© 2025 <strong id="footer-name">عيادات جامعة العلوم والتكنولوجيا</strong> — <span id="footer-sub">كلية طب الأسنان | الأردن</span></p>
+  </footer>
+</div>
+
+<script>
+var currentLang = 'ar';
+
+var T = {
+  'nav-brand':       { ar: 'عيادات جامعة العلوم والتكنولوجيا', en: 'JUST Dental Clinics' },
+  'nl-home':         { ar: 'الرئيسية', en: 'Home' },
+  'nl-services':     { ar: 'خدماتنا', en: 'Services' },
+  'nl-booking':      { ar: 'حجز موعد', en: 'Book' },
+  'nl-doctors':      { ar: 'الأطباء', en: 'Doctors' },
+  'nl-contact':      { ar: 'تواصل معنا', en: 'Contact' },
+  'lang-label':      { ar: 'اللغة', en: 'Language' },
+  'nav-cta':         { ar: 'احجز الآن', en: 'Book Now' },
+  'hero-badge-txt':  { ar: 'جامعة العلوم والتكنولوجيا - الأردن', en: 'Jordan University of Science & Technology' },
+  'hero-h1':         { ar: 'ابتسامتك أمانة في أيدٍ<br><span style="color:#7de0d4">متخصصة وموثوقة</span>', en: 'Your Smile in<br><span style="color:#7de0d4">Trusted, Expert Hands</span>' },
+  'hero-p':          { ar: 'احصل على رعاية أسنان احترافية مجانية بالكامل على يد طلاب طب الأسنان تحت إشراف أساتذة متخصصين. جودة عالية، خدمة متميزة، وابتسامة لا تُنسى.', en: 'Get completely free professional dental care from dental students under specialist faculty supervision. High quality, outstanding service, and an unforgettable smile.' },
+  'hero-btn1':       { ar: 'احجز موعد مجاني', en: 'Book a Free Appointment' },
+  'hero-btn2':       { ar: 'تعرّف على خدماتنا', en: 'Our Services' },
+  'stat1-lbl':       { ar: 'مجاني', en: 'Free' },
+  'stat2-lbl':       { ar: 'خدمات', en: 'Services' },
+  'stat3-lbl':       { ar: 'رد خلال', en: 'Response' },
+  'univ-name':       { ar: 'جامعة العلوم والتكنولوجيا الأردنية', en: 'Jordan University of Science & Technology' },
+  'univ-sub':        { ar: 'كلية طب الأسنان — طلاب السنة الرابعة', en: 'Faculty of Dentistry — 4th Year Students' },
+  'univ-badge':      { ar: 'تحت إشراف متخصصين', en: 'Under Specialist Supervision' },
+  'free-txt':        { ar: 'العلاج مجاني بالكامل ✓ تحت إشراف أكاديمي متخصص ✓ رعاية احترافية لضمان أفضل النتائج', en: 'Completely Free Treatment ✓ Under Specialist Academic Supervision ✓ Professional Care for Best Results' },
+  'svc-tag':         { ar: 'خدماتنا', en: 'Services' },
+  'svc-h2':          { ar: 'خدمات طب الأسنان المتاحة', en: 'Available Dental Services' },
+  'svc-p':           { ar: 'نقدم مجموعة من الخدمات الأساسية لصحة الأسنان، كلها مجانية بالكامل تحت إشراف أساتذة متخصصين', en: 'We offer essential dental services, all completely free under specialist faculty supervision' },
+  'svc1-h':          { ar: 'فحص عام', en: 'General Examination' },
+  'svc1-p':          { ar: 'فحص شامل لصحة الأسنان واللثة، تشخيص دقيق وخطة علاجية مناسبة', en: 'Comprehensive teeth and gum checkup with accurate diagnosis and treatment plan' },
+  'svc2-h':          { ar: 'تنظيف الأسنان', en: 'Dental Cleaning' },
+  'svc2-p':          { ar: 'إزالة الجير والترسبات، تلميع وتنظيف احترافي لأسنان مشرقة وصحية', en: 'Tartar removal, professional polishing and cleaning for bright healthy teeth' },
+  'svc3-h':          { ar: 'حشو الأسنان', en: 'Dental Fillings' },
+  'svc3-p':          { ar: 'علاج التسوس وإعادة الشكل الطبيعي للسن بمواد عالية الجودة', en: 'Treating decay and restoring natural tooth shape with high-quality materials' },
+  'svc4-h':          { ar: 'خلع الأسنان', en: 'Tooth Extraction' },
+  'svc4-p':          { ar: 'خلع الأسنان بأقل ألم ممكن مع ضمان السلامة والتعافي السريع', en: 'Tooth extraction with minimal pain, ensuring safety and quick recovery' },
+  'svc5-h':          { ar: 'طب أسنان الأطفال', en: 'Pediatric Dentistry' },
+  'svc5-p':          { ar: 'رعاية أسنان متخصصة للأطفال تشمل الفحص والحشو وتطبيق مادة الفلورايد للوقاية من التسوس', en: 'Specialized dental care for children including checkups, fillings, and fluoride treatment to prevent cavities' },
+  'svc6-h':          { ar: 'تبييض الأسنان', en: 'Teeth Whitening' },
+  'svc6-p':          { ar: 'تقنيات تبييض آمنة وفعّالة للحصول على ابتسامة مشرقة وواثقة', en: 'Safe and effective whitening techniques for a bright, confident smile' },
+  'free-tag-1':      { ar: 'مجاني', en: 'Free' },
+  'free-tag-2':      { ar: 'مجاني', en: 'Free' },
+  'free-tag-3':      { ar: 'مجاني', en: 'Free' },
+  'free-tag-4':      { ar: 'مجاني', en: 'Free' },
+  'free-tag-5':      { ar: 'مجاني', en: 'Free' },
+  'free-tag-6':      { ar: 'مجاني', en: 'Free' },
+  'bk-tag':          { ar: 'حجز موعد', en: 'Appointment' },
+  'bk-h2':           { ar: 'احجز موعدك الآن', en: 'Book Your Appointment' },
+  'bk-p':            { ar: 'املأ البيانات أدناه وسيتم إرسال طلبك مباشرة عبر واتساب', en: 'Fill in your details and your request will be sent directly via WhatsApp' },
+  'lbl-name':        { ar: 'الاسم الكامل', en: 'Full Name' },
+  'lbl-phone':       { ar: 'رقم هاتفك', en: 'Your Phone Number' },
+  'lbl-service':     { ar: 'نوع الخدمة', en: 'Service Type' },
+  'sel-default':     { ar: '-- اختر الخدمة المطلوبة --', en: '-- Select a Service --' },
+  'sel-s1':          { ar: 'فحص عام', en: 'General Examination' },
+  'sel-s2':          { ar: 'تنظيف الأسنان', en: 'Dental Cleaning' },
+  'sel-s3':          { ar: 'حشو الأسنان', en: 'Dental Filling' },
+  'sel-s4':          { ar: 'خلع الأسنان', en: 'Tooth Extraction' },
+  'sel-s5':          { ar: 'طب أسنان الأطفال', en: 'Pediatric Dentistry' },
+  'sel-s6':          { ar: 'تبييض الأسنان', en: 'Teeth Whitening' },
+  'sel-s7':          { ar: 'أخرى', en: 'Other' },
+  'lbl-notes':       { ar: 'ملاحظات أو استفسارات (اختياري)', en: 'Notes or Inquiries (Optional)' },
+  'submit-btn-txt':  { ar: 'إرسال الطلب عبر واتساب', en: 'Send Request via WhatsApp' },
+  'submit-note-txt': { ar: 'سيتم التواصل معك خلال 24 ساعة من وقت الإرسال', en: 'You will be contacted within 24 hours of sending' },
+  'success-txt':     { ar: 'تم فتح واتساب! أرسل الرسالة لإتمام الحجز 🎉', en: 'WhatsApp opened! Send the message to complete your booking 🎉' },
+  'doc-tag':         { ar: 'الأطباء', en: 'Doctors' },
+  'doc-h2':          { ar: 'فريق الرعاية الطبية', en: 'Medical Care Team' },
+  'doc-p':           { ar: 'متخصصون يضعون صحتك في المقام الأول', en: 'Specialists who put your health first' },
+  'doc-name':        { ar: 'قصي عواد', en: 'Qusai Awwad' },
+  'doc-title':       { ar: 'طالب طب أسنان | السنة الرابعة — جامعة العلوم والتكنولوجيا', en: 'Dental Student | 4th Year — Jordan University of Science & Technology' },
+  'doc-desc':        { ar: 'نحن طلاب كلية طب الأسنان في جامعة العلوم والتكنولوجيا، ونعمل تحت إشراف مباشر من أساتذة متخصصين ذوي خبرات واسعة. هذا يضمن لك حصولك على أعلى مستوى من الرعاية الطبية مع الاستفادة من أحدث ما تعلمناه في مراحل دراستنا المتقدمة. كل حالة تُعالَج باهتمام كامل ودقة عالية لضمان أفضل النتائج لك.', en: 'We are dental students at Jordan University of Science & Technology, working under the direct supervision of specialist professors with extensive experience. This ensures you receive the highest level of medical care. Every case is treated with full attention and high precision to guarantee the best results for you.' },
+  'tag1':            { ar: 'حشو وترميم', en: 'Filling & Restoration' },
+  'tag2':            { ar: 'خلع وجراحة', en: 'Extraction & Surgery' },
+  'tag3':            { ar: 'تنظيف ووقاية', en: 'Cleaning & Prevention' },
+  'tag4':            { ar: 'تبييض', en: 'Whitening' },
+  'tag5':            { ar: 'طب أطفال', en: 'Pediatric Dentistry' },
+  'tag6':            { ar: 'إشراف متخصص', en: 'Specialist Supervision' },
+  'ct-tag':          { ar: 'تواصل معنا', en: 'Contact Us' },
+  'ct-h2':           { ar: 'نحن هنا لمساعدتك', en: "We're Here to Help" },
+  'ct-p':            { ar: 'تواصل معنا عبر أي من الوسائل التالية وسنرد عليك في أقرب وقت', en: 'Contact us through any of the following methods and we will respond as soon as possible' },
+  'ct-h-wa':         { ar: 'واتساب', en: 'WhatsApp' },
+  'ct-h-email':      { ar: 'البريد الإلكتروني', en: 'Email Address' },
+  'ct-h-resp':       { ar: 'وقت الرد', en: 'Response Time' },
+  'ct-p-resp':       { ar: 'خلال 24 ساعة من استلام طلبك', en: 'Within 24 hours of receiving your request' },
+  'ct-h-loc':        { ar: 'الموقع', en: 'Location' },
+  'ct-p-loc':        { ar: 'جامعة العلوم والتكنولوجيا — الأردن', en: 'Jordan University of Science & Technology — Jordan' },
+  'footer-name':     { ar: 'عيادات جامعة العلوم والتكنولوجيا', en: 'JUST Dental Clinics' },
+  'footer-sub':      { ar: 'كلية طب الأسنان | الأردن', en: 'Faculty of Dentistry | Jordan' }
+};
+
+var placeholders = {
+  'inp-name':  { ar: 'أدخل اسمك الكامل', en: 'Enter your full name' },
+  'inp-phone': { ar: '+962...', en: '+962...' },
+  'inp-notes': { ar: 'اكتب أي تفاصيل إضافية...', en: 'Write any additional details...' }
+};
+
+var avatarText = { ar: 'ق.ع', en: 'Q.A' };
+
+function setLang(lang) {
+  currentLang = lang;
+  var body = document.body;
+  if (lang === 'en') {
+    body.classList.add('en');
+    body.setAttribute('dir', 'ltr');
+    document.getElementById('opt-ar').classList.remove('selected');
+    document.getElementById('opt-en').classList.add('selected');
+  } else {
+    body.classList.remove('en');
+    body.setAttribute('dir', 'rtl');
+    document.getElementById('opt-en').classList.remove('selected');
+    document.getElementById('opt-ar').classList.add('selected');
+  }
+  for (var id in T) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = T[id][lang];
+  }
+  for (var pid in placeholders) {
+    var pel = document.getElementById(pid);
+    if (pel) pel.placeholder = placeholders[pid][lang];
+  }
+  var av = document.getElementById('doc-avatar');
+  if (av) av.textContent = avatarText[lang];
+  closeLangMenu();
+}
+
+function toggleLangMenu() {
+  var dd = document.getElementById('lang-dropdown');
+  var btn = document.getElementById('lang-toggle');
+  var isOpen = dd.classList.contains('open');
+  if (isOpen) { dd.classList.remove('open'); btn.classList.remove('open'); }
+  else { dd.classList.add('open'); btn.classList.add('open'); }
+}
+
+function closeLangMenu() {
+  document.getElementById('lang-dropdown').classList.remove('open');
+  document.getElementById('lang-toggle').classList.remove('open');
+}
+
+document.addEventListener('click', function(e) {
+  var wrapper = document.getElementById('lang-wrapper');
+  if (wrapper && !wrapper.contains(e.target)) closeLangMenu();
+});
+
+function goTo(id, linkEl) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - 68;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+  document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+  if (linkEl) linkEl.classList.add('active');
+}
+
+function sendWhatsApp() {
+  var name    = document.getElementById('inp-name').value.trim();
+  var phone   = document.getElementById('inp-phone').value.trim();
+  var service = document.getElementById('inp-service').value;
+  var notes   = document.getElementById('inp-notes').value.trim();
+
+  var alertMsg = currentLang === 'ar'
+    ? 'يرجى ملء جميع الحقول المطلوبة (الاسم، الرقم، الخدمة)'
+    : 'Please fill in all required fields (Name, Phone, Service)';
+
+  if (!name || !phone || !service) { alert(alertMsg); return; }
+
+  var msg = currentLang === 'ar'
+    ? 'مرحباً، أريد حجز موعد في عيادات جامعة العلوم والتكنولوجيا.\n\n'
+      + '👤 الاسم: ' + name + '\n'
+      + '📞 رقمي: ' + phone + '\n'
+      + '🦷 الخدمة المطلوبة: ' + service
+      + (notes ? '\n📝 ملاحظات: ' + notes : '')
+    : 'Hello, I would like to book an appointment at JUST Dental Clinics.\n\n'
+      + '👤 Name: ' + name + '\n'
+      + '📞 My number: ' + phone + '\n'
+      + '🦷 Service: ' + service
+      + (notes ? '\n📝 Notes: ' + notes : '');
+
+  var url = 'https://wa.me/962795462710?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+
+  document.getElementById('success-msg').style.display = 'block';
+  document.getElementById('inp-name').value = '';
+  document.getElementById('inp-phone').value = '';
+  document.getElementById('inp-service').value = '';
+  document.getElementById('inp-notes').value = '';
+  setTimeout(function() { document.getElementById('success-msg').style.display = 'none'; }, 6000);
+}
+</script>
