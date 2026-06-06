@@ -1179,6 +1179,52 @@ function goTo(id, linkEl) {
   document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
   if (linkEl) linkEl.classList.add('active');
 }
+  var sectionsToObserve = ['hero', 'services', 'booking', 'doctors', 'faq', 'contact'];
+var navLinksMap = {
+  'hero': 'nl-home',
+  'services': 'nl-services',
+  'booking': 'nl-booking',
+  'doctors': 'nl-doctors',
+  'faq': 'nl-faq',
+  'contact': 'nl-contact'
+};
+
+var observerOptions = {
+  root: null,
+  rootMargin: '-30% 0px -50% 0px', 
+  threshold: 0
+};
+
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      var id = entry.target.id;
+      var linkId = navLinksMap[id];
+      
+      if (linkId) {
+        document.querySelectorAll('.nav-links a').forEach(function(a) {
+          a.classList.remove('active');
+        });
+        
+        var activeLink = document.getElementById(linkId);
+        if (activeLink) {
+          activeLink.classList.add('active');
+          
+          activeLink.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          });
+        }
+      }
+    }
+  });
+}, observerOptions);
+
+sectionsToObserve.forEach(function(id) {
+  var sec = document.getElementById(id);
+  if (sec) observer.observe(sec);
+});
 </script>
 </body>
 </html>
