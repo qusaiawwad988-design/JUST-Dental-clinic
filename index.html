@@ -429,6 +429,20 @@
     .nav-logo span { display: none; }
     .booking-wrap { padding: 28px 20px; }
     .thankyou-card { padding: 36px 24px; }
+    .nav-links {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+    .nav-links li {
+      flex-shrink: 0;
+    }
+  }
   }
 </style>
 </head>
